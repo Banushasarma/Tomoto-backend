@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import connectDB from './config/db.js';
 import foodRouter from './routes/foodRoute.js';
+import userRouter from './routes/userRoute.js';
 
 //app configuration
 const app = express();
@@ -17,6 +18,7 @@ connectDB();
 //API Endpoints
 app.use("/images", express.static("uploads"));
 app.use("/api/food", foodRouter);
+app.use("/api/user", userRouter);
 
 app.get('/', (req, res) => {
     res.send("API is working.");
