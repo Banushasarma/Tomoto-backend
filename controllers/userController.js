@@ -3,9 +3,29 @@ import jwt from 'jsonwebtoken';
 import bycrypt from 'bcrypt';
 import validator from "validator";
 import 'dotenv/config'
+
+
 //login user
 const loginUser = async (req, res) => {
+    const { email, password } = req.body;
+    try {
+        //check if user exists
+        const user = await userModel.findOne({ email });
+        if (!user) return res.status(400).json({ success: false, message: "User not found" });
 
+        //check if password matches
+        const isMatch = await bycrypt.compare(password, user.password);
+        if (!isMatch) return res.status(400).json({ success: false, message: "Invalid password" });
+
+        //generate token
+        const token = createToken(user._id);
+
+        res.json({ success: true, message: "User logged in successfully", token });
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ success: false, message: "Server Error" });
+    }
 }
 
 //Register User
