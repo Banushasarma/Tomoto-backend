@@ -1,4 +1,3 @@
-import e from "express";
 import userModel from "../models/userModel.js";
 
 //add items to the cart
