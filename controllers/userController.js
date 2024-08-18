@@ -11,11 +11,11 @@ const loginUser = async (req, res) => {
     try {
         //check if user exists
         const user = await userModel.findOne({ email });
-        if (!user) return res.status(400).json({ success: false, message: "User not found" });
+        if (!user) return res.json({ success: false, message: "User not found" });
 
         //check if password matches
         const isMatch = await bycrypt.compare(password, user.password);
-        if (!isMatch) return res.status(400).json({ success: false, message: "Invalid password" });
+        if (!isMatch) return res.json({ success: false, message: "Invalid password" });
 
         //generate token
         const token = createToken(user._id);
@@ -24,23 +24,24 @@ const loginUser = async (req, res) => {
 
     } catch (error) {
         console.error(error);
-        res.status(500).json({ success: false, message: "Server Error" });
+        res.json({ success: false, message: "Server Error" });
     }
 }
 
 //Register User
 const registerUser = async (req, res) => {
     const { name, email, password } = req.body;
+
     try {
         //check if user already
         const exists = await userModel.findOne({ email: email });
-        if (exists) return res.status(400).json({ success: false, message: "User already exists" });
+        if (exists) return res.json({ success: false, message: "User already exists" });
 
         //validate email
-        if (!validator.isEmail(email)) return res.status(400).json({ success: false, message: "Invalid email" });
+        if (!validator.isEmail(email)) return res.json({ success: false, message: "Invalid email" });
 
         //validate password
-        if (!validator.isLength(password, { min: 8 })) return res.status(400).json({ success: false, message: "Password must be at least 8 characters long" });
+        if (!validator.isLength(password, { min: 8 })) return res.json({ success: false, message: "Password must be at least 8 characters long" });
 
         //Generate salt for password
         const salt = await bycrypt.genSalt(10);
@@ -56,7 +57,7 @@ const registerUser = async (req, res) => {
 
     } catch (error) {
         console.error(error);
-        res.status(500).json({ success: false, message: "Server Error" });
+        res.json({ success: false, message: "Server Error" });
     }
 }
 
@@ -66,24 +67,5 @@ const createToken = (id) => {
     return token;
 }
 
-//check password    
-const checkPassword = (password, hashedPassword) => {
 
-}
-
-//check email   
-const checkEmail = (email) => {
-
-}
-
-//validate email
-const validateEmail = (email) => {
-
-}
-
-//validate password
-const validatePassword = (password) => {
-
-}
-
-export { loginUser, registerUser, createToken as generateToken, checkPassword, checkEmail, validateEmail, validatePassword };
+export { loginUser, registerUser, createToken };

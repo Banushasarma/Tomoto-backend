@@ -19,7 +19,7 @@ const addFood = async (req, res) => {
         res.status(201).json({ success: true, message: "Food item added successfully" });
     } catch (error) {
         console.error(error);
-        res.status(500).json({ success: false, message: "Server Error" });
+        res.json({ success: false, message: "Server Error" });
     }
 }
 
@@ -30,7 +30,7 @@ const listFood = async (req, res) => {
         res.json({ success: true, data: foods });
     } catch (error) {
         console.error(error);
-        res.status(500).json({ success: false, message: "Server Error" });
+        res.json({ success: false, message: "Server Error" });
     }
 }
 
@@ -45,7 +45,7 @@ const removeFood = async (req, res) => {
         res.json({ success: true, message: "Food Removed" });
     } catch (error) {
         console.error(error);
-        res.status(500).json({ success: false, message: "Server Error" });
+        res.json({ success: false, message: "Server Error" });
     }
 }
 
